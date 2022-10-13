@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include dn_tobill_account *.css
+recursive-include dn_tobill_account *.csv
+recursive-include dn_tobill_account *.html
+recursive-include dn_tobill_account *.ico
+recursive-include dn_tobill_account *.js
+recursive-include dn_tobill_account *.json
+recursive-include dn_tobill_account *.md
+recursive-include dn_tobill_account *.png
+recursive-include dn_tobill_account *.py
+recursive-include dn_tobill_account *.svg
+recursive-include dn_tobill_account *.txt
+recursive-exclude dn_tobill_account *.pyc

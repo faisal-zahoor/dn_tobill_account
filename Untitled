@@ -1,0 +1,20 @@
+select
+dni.parent as "DeliveryNote:Link/Delivery Note:200",
+dni.item_code  as "Item:Link/Item:150",
+dni.qty as "Quantity:Float:50",
+dni.billed_qty as "BilledQuantity:Float:50",
+val_rate as "Valuation Rate:Currency:100",
+valuation_rate as "1Valuation Rate:Currency:100",
+(dni.qty-dni.billed_qty)*valuation_rate as "Pending Total:Currency:100",
+dn.status as "Status:Text:100"
+from `tabDelivery Note Item` as dni
+join `tabDelivery Note` as dn on dn.name = dni.parent
+left outer join (select valuation_rate, item_code from
+(select valuation_rate, item_code,posting_date from
+`tabStock Ledger Entry` where valuation_rate > 0 AND is_cancelled = 'No' AND voucher_type='Delivery Note'
+order by posting_date desc) as temp
+group by item_code) as val on (val.item_code = dni.item_code)
+where billed_qty < qty and dn.status not in ('Draft', 'Cancelled')
+and dn.status in ('To Bill')
+AND (dn.posting_date) >=%(from_date)s
+AND (dn.posting_date) <=%(to_date)s;
